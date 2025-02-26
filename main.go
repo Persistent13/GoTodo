@@ -31,36 +31,44 @@ type (
 	CreateTodoPogo struct {
 		Content string `json:"content"`
 	}
+
+	Error struct {
+		Message string `json:"message"`
+		Code    int    `json:"code"`
+	}
 )
 
 var db *sql.DB
 
 func main() {
 	var sqlErr error
+
 	if db, sqlErr = sql.Open("sqlite", "./todos.db"); sqlErr != nil {
 		log.Fatal(sqlErr)
 	}
 
-	if driver, driverErr := sqlite.WithInstance(db, &sqlite.Config{}); driverErr != nil {
+	driver, driverErr := sqlite.WithInstance(db, &sqlite.Config{})
+	if driverErr != nil {
 		log.Fatal(driverErr)
-	} else {
-		if m, err := migrate.NewWithDatabaseInstance("file://./migrations", "sqlite", driver); err != nil {
-			log.Fatal(err)
-		} else {
-			if err := m.Up(); nil != err && !errors.Is(err, migrate.ErrNoChange) {
-				log.Fatal(err)
-			} else {
-				log.Print("Migrations successfully in place")
-			}
-		}
 	}
+
+	m, err := migrate.NewWithDatabaseInstance("file://./migrations", "sqlite", driver)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := m.Up(); nil != err && !errors.Is(err, migrate.ErrNoChange) {
+		log.Fatal(err)
+	}
+
+	log.Print("Migrations successfully in place")
 
 	e := echo.New()
 	e.POST("/api/todo", CreateTodo)
 	e.GET("/api/todo", ReadTodo)
 	e.PATCH("/api/todo/:id", UpdateTodo)
 	e.DELETE("/api/todo/:id", DeleteTodo)
-	e.GET("/", PrintHelp)
+	e.File("/", "static/index.html")
 
 	if err := e.Start(":8080"); err != nil {
 		log.Fatal(err)

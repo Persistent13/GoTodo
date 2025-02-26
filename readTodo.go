@@ -21,7 +21,10 @@ func ReadTodo(ctx echo.Context) error {
 
 	if rows, queryErr = db.Query(query, count); queryErr != nil {
 		log.Error(queryErr)
-		return ctx.JSON(http.StatusInternalServerError, "Failed to query database")
+		msg := new(Error)
+		msg.Message = "Failed to query database"
+		msg.Code = http.StatusInternalServerError
+		return ctx.JSON(http.StatusInternalServerError, msg)
 	}
 	defer rows.Close()
 
@@ -30,14 +33,20 @@ func ReadTodo(ctx echo.Context) error {
 		var item Todo
 		if err := rows.Scan(&item.ID, &item.Content, &item.CreatedAtUtc, &item.UpdatedAtUtc, &item.Done, &item.IsDeleted); err != nil {
 			log.Error(err)
-			return ctx.JSON(http.StatusInternalServerError, "Failed to map database object")
+			msg := new(Error)
+			msg.Message = "Failed to map database object"
+			msg.Code = http.StatusInternalServerError
+			return ctx.JSON(http.StatusInternalServerError, msg)
 		}
 		todos = append(todos, item)
 	}
 
 	if err := rows.Err(); err != nil {
 		log.Error(err)
-		return ctx.JSON(http.StatusInternalServerError, "Failed to map database object")
+		msg := new(Error)
+		msg.Message = "Failed to map database object"
+		msg.Code = http.StatusInternalServerError
+		return ctx.JSON(http.StatusInternalServerError, msg)
 	}
 
 	return ctx.JSON(http.StatusOK, todos)

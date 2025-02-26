@@ -9,11 +9,17 @@ import (
 func UpdateTodo(ctx echo.Context) error {
 	idStr := ctx.Param("id")
 	if id, err := strconv.ParseUint(idStr, 10, 64); err != nil {
-		return ctx.JSON(http.StatusInternalServerError, "id must be a positive integer")
+		msg := new(Error)
+		msg.Code = http.StatusBadRequest
+		msg.Message = "id must be a positive integer"
+		return ctx.JSON(http.StatusBadRequest, msg)
 	} else {
 		var todo PatchTodoPogo
 		if err := ctx.Bind(&todo); err != nil {
-			return ctx.JSON(http.StatusInternalServerError, "Invalid JSON")
+			msg := new(Error)
+			msg.Code = http.StatusBadRequest
+			msg.Message = "Invalid JSON body"
+			return ctx.JSON(http.StatusBadRequest, msg)
 		}
 		todo.ID = uint(id)
 
@@ -41,7 +47,10 @@ func UpdateTodo(ctx echo.Context) error {
 		params = append(params, id)
 
 		if _, err := db.Exec(query, params...); err != nil {
-			return ctx.JSON(http.StatusInternalServerError, "Failed to update data")
+			msg := new(Error)
+			msg.Code = http.StatusInternalServerError
+			msg.Message = "Failed to update data in database"
+			return ctx.JSON(http.StatusInternalServerError, msg)
 		}
 
 		return ctx.NoContent(http.StatusOK)

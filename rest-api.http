@@ -10,7 +10,7 @@ Accept: application/json
 
 ###
 
-PATCH http://localhost:8080/api/todo/3
+PATCH http://localhost:8080/api/todo/1
 Content-Type: application/json
 
 { "content": "Hello world, what's up?" }
