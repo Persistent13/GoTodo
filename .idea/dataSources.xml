@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="todo.db" read-only="true" uuid="69147d20-35f6-4194-aeb8-dd6d95f46819">
+    <data-source source="LOCAL" name="todos.db" uuid="91a6f18e-b4d7-4e05-9da1-5c6e2d761104">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:todo.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:todos.db</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
       </jdbc-additional-properties>

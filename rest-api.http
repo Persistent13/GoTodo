@@ -1,0 +1,27 @@
+POST http://localhost:8080/api/todo
+Content-Type: application/json
+
+{ "content": "Hello World!" }
+
+###
+
+GET http://localhost:8080/api/todo
+Accept: application/json
+
+###
+
+PATCH http://localhost:8080/api/todo/3
+Content-Type: application/json
+
+{ "content": "Hello world, what's up?" }
+
+###
+
+GET http://localhost:8080/api/todo?count=1
+Accept: application/json
+
+###
+
+DELETE http://localhost:8080/api/todo/1
+
+###
