@@ -1,6 +1,7 @@
-package main
+package todo
 
 import (
+	"awesomeProject/constants"
 	"database/sql"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
@@ -8,6 +9,7 @@ import (
 )
 
 func ReadTodo(ctx echo.Context) error {
+	db := ctx.Get(constants.DbContextKey).(*sql.DB)
 	count := ctx.QueryParams().Get("count")
 
 	var query string

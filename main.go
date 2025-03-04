@@ -1,55 +1,37 @@
 package main
 
 import (
+	"awesomeProject/constants"
+	"awesomeProject/todo"
 	"database/sql"
 	"errors"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/sqlite"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/labstack/echo/v4"
+	_ "github.com/labstack/echo/v4/middleware"
 	"log"
 	_ "modernc.org/sqlite"
 )
 
-type (
-	Todo struct {
-		ID           uint
-		Content      string
-		CreatedAtUtc uint
-		UpdatedAtUtc uint
-		Done         bool
-		IsDeleted    bool
+func dbMiddleware(db *sql.DB) echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(ctx echo.Context) error {
+			ctx.Set(constants.DbContextKey, db)
+			return next(ctx)
+		}
 	}
-
-	PatchTodoPogo struct {
-		ID        uint    `json:"id"`
-		Content   *string `json:"content"`
-		Done      *bool   `json:"done"`
-		IsDeleted *bool   `json:"isDeleted"`
-	}
-
-	CreateTodoPogo struct {
-		Content string `json:"content"`
-	}
-
-	Error struct {
-		Message string `json:"message"`
-		Code    int    `json:"code"`
-	}
-)
-
-var db *sql.DB
+}
 
 func main() {
-	var sqlErr error
-
-	if db, sqlErr = sql.Open("sqlite", "./todos.db"); sqlErr != nil {
-		log.Fatal(sqlErr)
+	db, err := sql.Open("sqlite", "./todos.db")
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	driver, driverErr := sqlite.WithInstance(db, &sqlite.Config{})
-	if driverErr != nil {
-		log.Fatal(driverErr)
+	driver, err := sqlite.WithInstance(db, &sqlite.Config{})
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	m, err := migrate.NewWithDatabaseInstance("file://./migrations", "sqlite", driver)
@@ -64,10 +46,11 @@ func main() {
 	log.Print("Migrations successfully in place")
 
 	e := echo.New()
-	e.POST("/api/todo", CreateTodo)
-	e.GET("/api/todo", ReadTodo)
-	e.PATCH("/api/todo/:id", UpdateTodo)
-	e.DELETE("/api/todo/:id", DeleteTodo)
+	e.Use(dbMiddleware(db))
+	e.POST("/api/todo", todo.CreateTodo)
+	e.GET("/api/todo", todo.ReadTodo)
+	e.PATCH("/api/todo/:id", todo.UpdateTodo)
+	e.DELETE("/api/todo/:id", todo.DeleteTodo)
 	e.File("/", "static/index.html")
 
 	if err := e.Start(":8080"); err != nil {

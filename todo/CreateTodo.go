@@ -1,6 +1,8 @@
-package main
+package todo
 
 import (
+	"awesomeProject/constants"
+	"database/sql"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"net/http"
@@ -9,6 +11,7 @@ import (
 
 func CreateTodo(ctx echo.Context) error {
 	var row int64
+	db := ctx.Get(constants.DbContextKey).(*sql.DB)
 	todo := new(CreateTodoPogo)
 
 	if err := ctx.Bind(todo); err != nil {

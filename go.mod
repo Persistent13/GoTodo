@@ -26,6 +26,7 @@ require (
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/time v0.8.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
 	lukechampine.com/uint128 v1.2.0 // indirect
 	modernc.org/cc/v3 v3.36.3 // indirect
