@@ -1,4 +1,4 @@
-module awesomeProject
+module gotodo
 
 go 1.24
 

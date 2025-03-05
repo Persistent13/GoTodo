@@ -1,8 +1,6 @@
 package main
 
 import (
-	"awesomeProject/constants"
-	"awesomeProject/todo"
 	"database/sql"
 	"errors"
 	"github.com/golang-migrate/migrate/v4"
@@ -10,6 +8,8 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/labstack/echo/v4"
 	_ "github.com/labstack/echo/v4/middleware"
+	"gotodo/constants"
+	"gotodo/todo"
 	"log"
 	_ "modernc.org/sqlite"
 )

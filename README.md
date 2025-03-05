@@ -4,7 +4,7 @@
 
 This is a basic REST API to demonstrate an example Go code base.
 
-It's not intended to be comprehensive or complex but to show that I can productively code in Go as well as handle the surrounding bits of testing and interaction with staples such as SQL and caching.
+It's not intended to be comprehensive or complex but to show that I can productively code in Go as well as with staples such as SQL and caching.
 
 ## How to use this
 

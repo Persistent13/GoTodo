@@ -1,10 +1,10 @@
 package todo
 
 import (
-	"awesomeProject/constants"
 	"database/sql"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
+	"gotodo/constants"
 	"net/http"
 	"time"
 )

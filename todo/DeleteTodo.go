@@ -1,9 +1,9 @@
 package todo
 
 import (
-	"awesomeProject/constants"
 	"database/sql"
 	"github.com/labstack/echo/v4"
+	"gotodo/constants"
 	"net/http"
 )
 
