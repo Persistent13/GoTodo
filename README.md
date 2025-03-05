@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This is a basic REST API to demonstrate an example Go code base.
+This is a basic REST API to demonstrate an example Go code base authored, by me, Dakota Clark.
 
 It's not intended to be comprehensive or complex but to show that I can productively code in Go as well as with staples such as SQL and caching.
 
@@ -52,6 +52,10 @@ For this being so small, the rest-api.http file holds the tests.
 In a larger project, I'd have the route functions call handlers that would be testable within go itself but as this is a smaller demo, I've opted to skip that here.
 
 But if you'd like to know how I've done that in other projects, feel free to ask!
+
+### Why echo?
+
+While the stdlib can do what echo does as of 1.22 and later, I chose echo due to the middleware support.
 
 ### Why SQLite?
 
